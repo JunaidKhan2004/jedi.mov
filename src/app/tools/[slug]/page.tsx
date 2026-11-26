@@ -11,6 +11,8 @@ import { MetadataViewerWorkspace } from "@/components/tools/MetadataViewerWorksp
 import { UrlValidatorWorkspace } from "@/components/tools/UrlValidatorWorkspace";
 import { AdBanner } from "@/components/AdBanner";
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://jedimov.vercel.app";
+
 export function generateStaticParams() {
   return MEDIA_TOOLS.map((tool) => ({ slug: tool.slug }));
 }
@@ -25,9 +27,31 @@ export async function generateMetadata({
   if (!tool) {
     return { title: "Tool Not Found — jedi.mov" };
   }
+
+  const title = `${tool.name} — Free Online Tool`;
+  const description = `${tool.shortDesc} 100% free, private, and running locally in your browser with zero upload limits.`;
+  const toolUrl = `${BASE_URL}/tools/${tool.slug}`;
+
   return {
-    title: `${tool.name} — jedi.mov`,
-    description: tool.shortDesc,
+    title,
+    description,
+    alternates: {
+      canonical: toolUrl,
+    },
+    openGraph: {
+      title: `${tool.name} | jedi.mov`,
+      description,
+      url: toolUrl,
+      siteName: "jedi.mov",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${tool.name} | jedi.mov`,
+      description,
+      creator: "@jedimov",
+    },
   };
 }
 
@@ -43,8 +67,58 @@ export default async function ToolDetailPage({
     notFound();
   }
 
+  const toolUrl = `${BASE_URL}/tools/${tool.slug}`;
+
+  const toolJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": BASE_URL,
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": `${BASE_URL}/tools`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": tool.name,
+            "item": toolUrl,
+          },
+        ],
+      },
+      {
+        "@type": "WebApplication",
+        "@id": `${toolUrl}#software`,
+        "name": `${tool.name} — jedi.mov`,
+        "url": toolUrl,
+        "description": tool.shortDesc,
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript and modern browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+        },
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolJsonLd) }}
+      />
       <Link
         href="/tools"
         className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"

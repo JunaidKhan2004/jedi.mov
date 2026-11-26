@@ -22,7 +22,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = window.localStorage.getItem("jedi-theme") as Theme | null;
     if (stored === "light" || stored === "dark" || stored === "retro") {
-      setThemeState(stored);
+      setTimeout(() => {
+        setThemeState(stored);
+      }, 0);
       document.documentElement.setAttribute("data-theme", stored);
     } else {
       document.documentElement.setAttribute("data-theme", "dark");

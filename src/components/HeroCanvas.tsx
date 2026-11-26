@@ -5,15 +5,18 @@ import * as THREE from "three";
 
 export function HeroCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [fallback, setFallback] = useState(false);
+  const [fallback, setFallback] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) {
-      setFallback(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
@@ -25,7 +28,7 @@ export function HeroCanvas() {
         powerPreference: "high-performance",
       });
     } catch {
-      setFallback(true);
+      setTimeout(() => setFallback(true), 0);
       return;
     }
 

@@ -245,7 +245,7 @@ export function DownloaderPanel({
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste a video, audio, or direct media URL (https://...)"
+              placeholder="Paste a video, audio, or direct media URL"
               aria-label="Media URL input"
               className="h-12 w-full rounded-xl bg-transparent pl-12 pr-20 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none sm:text-base"
             />
@@ -440,11 +440,10 @@ export function DownloaderPanel({
                             const firstMatch = media.formats.find((f) => f.kind === kind);
                             if (firstMatch) setSelectedFormatId(firstMatch.id);
                           }}
-                          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                            isActive
+                          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${isActive
                               ? "bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm"
                               : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                          }`}
+                            }`}
                         >
                           {kindMeta[kind].icon}
                           <span>{kindMeta[kind].label}</span>
@@ -516,8 +515,8 @@ export function DownloaderPanel({
                           ? selectedFormat?.kind === "audio" && !selectedFormat?.isDirectStream
                             ? "Embedding cover art & metadata..."
                             : selectedFormat?.kind === "video" && !selectedFormat?.isDirectStream
-                            ? "Preparing & merging HD video + audio..."
-                            : "Connecting to stream..."
+                              ? "Preparing & merging HD video + audio..."
+                              : "Connecting to stream..."
                           : "Downloading media..."}
                       </span>
                       <span className="shrink-0 font-mono">
@@ -533,13 +532,11 @@ export function DownloaderPanel({
                     </div>
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--bg-secondary)]">
                       <div
-                        className={`h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] transition-all duration-200 ${
-                          downloadedBytes === 0 ? "animate-pulse" : ""
-                        }`}
+                        className={`h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] transition-all duration-200 ${downloadedBytes === 0 ? "animate-pulse" : ""
+                          }`}
                         style={{
-                          width: `${
-                            downloadedBytes === 0 ? 100 : totalBytes ? progress : 60
-                          }%`,
+                          width: `${downloadedBytes === 0 ? 100 : totalBytes ? progress : 60
+                            }%`,
                         }}
                       />
                     </div>
