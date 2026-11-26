@@ -41,7 +41,8 @@ export function AdBanner({
     responsive: "min-h-[90px] w-full",
   };
 
-  const hasAdSenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adsenseClientId =
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-8940261966988383";
 
   return (
     <div
@@ -56,11 +57,11 @@ export function AdBanner({
       <div
         className={`relative flex w-full items-center justify-center rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--bg-secondary)]/50 p-2 transition-colors hover:border-[var(--accent)]/40 ${formatStyles[format]}`}
       >
-        {hasAdSenseClient ? (
+        {adsenseClientId ? (
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}
-            data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}
+            data-ad-client={adsenseClientId}
             data-ad-slot={slot}
             data-ad-format="auto"
             data-full-width-responsive="true"
