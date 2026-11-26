@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,18 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
+{
+  process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+    <Script
+      id="google-adsense"
+      async
+      strategy="afterInteractive"
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+      crossOrigin="anonymous"
+    />
+  )
+}
 
 export default function RootLayout({
   children,
