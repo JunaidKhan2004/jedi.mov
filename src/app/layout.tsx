@@ -34,19 +34,14 @@ export const metadata: Metadata = {
       "Download, convert and manage your media with powerful free online tools.",
     type: "website",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
-
-{
-  process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-    <Script
-      id="google-adsense"
-      async
-      strategy="afterInteractive"
-      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-      crossOrigin="anonymous"
-    />
-  )
-}
 
 export default function RootLayout({
   children,
@@ -60,6 +55,17 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
+          <Script
+            id="google-adsense"
+            async
+            strategy="afterInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className="min-h-full flex flex-col bg-[var(--bg-main)] text-[var(--text-primary)]">
         <ThemeProvider>
           <Navbar />
